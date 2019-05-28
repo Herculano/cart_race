@@ -64,6 +64,13 @@ defmodule Data do
         lap: 3,
         time: Time.from_iso8601!("00:01:39.987"),
         velocity: 42465
+      },
+      %{
+        id: 3,
+        name: "Mansel",
+        lap: 4,
+        time: Time.from_iso8601!("00:01:39.987"),
+        velocity: 42465
       }
 
     ]
