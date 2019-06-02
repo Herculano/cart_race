@@ -1,8 +1,28 @@
-# CartRace
+# Cart Race
 
-**TODO: Add description**
+**Application that defines a result output for a cart race**
 
 ## Installation
+
+Install Erlang and Elixir on [official Elixir lang site](https://elixir-lang.org/install.html)
+
+Open project directory and put the log file in the public dir. 
+
+Then run `mix do deps.get, compile`
+
+After compiled, run it tipping the command: `iex -S mix`
+
+To get the results, insert in the iex(Elixir Interactive shell) 
+the simple function call: `CartRace.result`  
+
+And start to fun yourself ;)
+
+All the results is generated in the runtime of the application.
+
+Don't need to add any dependency, database or something like that.
+
+This application is simple running task, that takes advantage of Elixir language benefits.
+
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `cart_race` to your list of dependencies in `mix.exs`:
