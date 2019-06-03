@@ -1,5 +1,23 @@
 defmodule Data do
 
+  NimbleCSV.define(CVSParse, escape: "\"")
+
+  def parser do
+    File.stream!("public/race_log.csv")
+    |> CVSParse.parse_stream
+    |> Stream.map(fn [_c,id,name,velocity,time,lap] ->
+      %{
+        id: String.to_integer(id),
+        name: name,
+        time: Time.from_iso8601!(time),
+        lap: String.to_integer(lap),
+        velocity: String.to_float(velocity)
+      }
+    end)
+    |> Enum.to_list
+  end
+
+
   def race_log do
     [
       %{
@@ -69,7 +87,7 @@ defmodule Data do
         id: 3,
         name: "Mansel",
         lap: 4,
-        time: Time.from_iso8601!("00:01:39.987"),
+        time: Time.from_iso8601!("00:01:30.987"),
         velocity: 44.275
       }
     ]
