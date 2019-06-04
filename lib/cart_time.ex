@@ -33,23 +33,23 @@ defmodule CartTime do
 
   def microseconds_to_time(duration) do
 
-      microseconds = rem(duration, 1000000) / 1000
-      seconds = rem(Kernel.trunc(duration / 100000), 60)
-      minutes = rem(Kernel.trunc(duration / (1000000 * 60)), 60)
-      hours = rem(Kernel.trunc(duration / (100000 * 60 * 60)), 24)
+    microseconds = rem(duration, 1000000) / 1000
+    seconds = rem(Kernel.trunc(duration / 1000000), 60)
+    minutes = rem(Kernel.trunc(duration / (1000000 * 60)), 60)
+    hours = rem(Kernel.trunc(duration / (1000000 * 60 * 60)), 24)
 
-      hours = if hours < 10, do:  "0" <> to_string(hours), else: to_string(hours)
-      minutes = if minutes < 10, do: "0" <> to_string(minutes), else: to_string(minutes)
-      seconds = if seconds < 10, do: "0" <> to_string(seconds), else: to_string(seconds)
+    hours = if hours < 10, do:  "0" <> to_string(hours), else: to_string(hours)
+    minutes = if minutes < 10, do: "0" <> to_string(minutes), else: to_string(minutes)
+    seconds = if seconds < 10, do: "0" <> to_string(seconds), else: to_string(seconds)
 
-      hours = String.to_integer(hours)
-      minutes = String.to_integer(minutes)
-      seconds = String.to_integer(seconds)
-      microseconds = Kernel.trunc(microseconds) * 1000
+    hours = String.to_integer(hours)
+    minutes = String.to_integer(minutes)
+    seconds = String.to_integer(seconds)
+    microseconds = Kernel.trunc(microseconds) * 1000
 
-      {:ok, time} = Time.new(hours, minutes, seconds, microseconds)
+    {:ok, time} = Time.new(hours, minutes, seconds, microseconds)
 
-      time |> Time.truncate(:millisecond)
+    time |> Time.truncate(:millisecond)
 
   end
 end

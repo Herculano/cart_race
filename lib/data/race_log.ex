@@ -1,6 +1,7 @@
 defmodule Data do
 
   NimbleCSV.define(CVSParse, escape: "\"")
+  alias Service.FileSys
 
   def parser do
     File.stream!("public/race_log.csv")
@@ -17,8 +18,28 @@ defmodule Data do
     |> Enum.to_list
   end
 
+  def writer(result) do
+    result
+    |> Enum.map(& &1)
+    |> IO.inspect
+    |> FileSys.make_csv(csv_headers(), "output", "race")
+  end
 
-  def race_log do
+  defp csv_headers do
+    ["acc_lap, avg_velocity, best_lap, diff, id, name, position, time"]
+  end
+
+  @spec race_log_mocked :: [
+          %{
+            id: 1 | 2 | 3,
+            lap: 1 | 2 | 3 | 4,
+            name: <<_::48, _::_*32>>,
+            time: Time.t(),
+            velocity: float
+          },
+          ...
+        ]
+  def race_log_mocked do
     [
       %{
         id: 1,
