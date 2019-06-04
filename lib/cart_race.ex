@@ -1,10 +1,7 @@
 defmodule CartRace do
   @moduledoc """
   Documentation for Cart Race.
-   caio.chedid@gympass.com
   """
-
-  require IEx
 
   @doc """
   Returns the race result based in a
@@ -41,9 +38,7 @@ defmodule CartRace do
   def set_diff(grid, min_laps \\ 4) do
     [winner | squad] = grid
 
-    winner = Map.put(winner, :diff, 0)
-
-    [winner |
+    [Map.put(winner, :diff, 0) |
       squad
       |> Enum.map(&analize_diff(&1, winner.time, min_laps))
     ]
