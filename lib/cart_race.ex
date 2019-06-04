@@ -13,7 +13,13 @@ defmodule CartRace do
     parse_reducer()
     |> enumerate_position()
     |> set_diff()
-    |> encode_data_result()
+    |> encode_file_data_result()
+  end
+
+  def best_time_race(result) do
+    result
+    |> Enum.sort(& CartTime.to_microseconds(&1.best_lap_time) < CartTime.to_microseconds(&2.best_lap_time))
+    |> Enum.at(0)
   end
 
   @spec parse_reducer :: [any]
@@ -44,7 +50,7 @@ defmodule CartRace do
     ]
   end
 
-  def encode_data_result(res), do: Data.writer(res)
+  def encode_file_data_result(res), do: Data.writer(res)
 
   defp analize_diff(pilot, w_time, min_laps) do
     diff =
