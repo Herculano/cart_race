@@ -10,19 +10,20 @@ Open project directory and put the log file in the public dir.
 
 Then run `mix do deps.get, compile`
 
-After compiled, run it tipping the command: `iex -S mix`
+After compiled, run it, typping the command: `iex -S mix`
 
-To get the results, insert in the iex(Elixir Interactive shell) 
-the simple function call: `CartRace.result`  
+To get the results, type in the iex(Elixir Interactive shell) 
+ and make a call for this function: `CartRace.result`  
 
-And start to fun yourself ;)
+Automatically the results will be wrote on `public/race_output.csv` path/file. So on.
+
+And start to fun! ;)
 
 All the results is generated in the runtime of the application.
 
 Don't need to add any dependency, database or something like that.
 
-This application is simple running task, that takes advantage of Elixir language benefits.
-
+This application is a simple running task, that takes advantage of Elixir language benefits.
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `cart_race` to your list of dependencies in `mix.exs`:
