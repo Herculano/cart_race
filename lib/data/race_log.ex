@@ -1,12 +1,19 @@
 defmodule Data do
 
-  NimbleCSV.define(CVSParse, escape: "\"")
-  alias Service.FileSys
-
   def parser do
     File.stream!("public/race_log.csv")
-    |> CVSParse.parse_stream
-    |> Stream.map(fn [_c,id,name,velocity,time,lap] ->
+    |> CSV.decode!
+    |> transform_data()
+  end
+
+  defp transform_data(data) when not is_list(data) do
+    [_ | d] = data |> Enum.to_list
+    transform_data(d)
+  end
+
+  defp transform_data(data) when is_list(data) do
+    data
+    |> Enum.map(fn [_c,id,name,velocity,time,lap] ->
       %{
         id: String.to_integer(id),
         name: name,
@@ -15,18 +22,21 @@ defmodule Data do
         velocity: String.to_float(velocity)
       }
     end)
-    |> Enum.to_list
   end
 
   def writer(result) do
     result
-    |> Enum.map(& &1)
-    |> IO.inspect
-    |> FileSys.make_csv(csv_headers(), "output", "race")
+    |> Enum.map(&format_regs/1)
+    |> Service.FileSys.make_csv(csv_headers(), "output", "race")
   end
 
-  defp csv_headers do
-    ["acc_lap, avg_velocity, best_lap, diff, id, name, position, time"]
+  defp csv_headers() do
+    ["position, pilot, time, diff, laps_completed, avg_velocity, best_lap, best_lap_time\n"]
+  end
+
+  defp format_regs(reg) do
+    id_str = to_string(reg.id) |> String.pad_leading(2, "0")
+    "#{reg.position},#{id_str} - #{reg.name},#{reg.time}, +#{reg.diff}, #{reg.acc_lap}, #{reg.avg_velocity}, #{reg.best_lap}, #{reg.best_lap_time}\n"
   end
 
   @spec race_log_mocked :: [
@@ -53,62 +63,6 @@ defmodule Data do
         name: "Vettel",
         lap: 1,
         time: Time.from_iso8601!("00:01:40.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 3,
-        name: "Mansel",
-        lap: 1,
-        time: Time.from_iso8601!("00:01:43.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 1,
-        name: "Barrichelo",
-        lap: 2,
-        time: Time.from_iso8601!("00:01:39.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 2,
-        name: "Vettel",
-        lap: 2,
-        time: Time.from_iso8601!("00:01:40.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 3,
-        name: "Mansel",
-        lap: 2,
-        time: Time.from_iso8601!("00:01:38.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 1,
-        name: "Barrichelo",
-        lap: 3,
-        time: Time.from_iso8601!("00:01:45.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 2,
-        name: "Vettel",
-        lap: 3,
-        time: Time.from_iso8601!("00:01:38.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 3,
-        name: "Mansel",
-        lap: 3,
-        time: Time.from_iso8601!("00:01:39.987"),
-        velocity: 44.275
-      },
-      %{
-        id: 3,
-        name: "Mansel",
-        lap: 4,
-        time: Time.from_iso8601!("00:01:30.987"),
         velocity: 44.275
       }
     ]

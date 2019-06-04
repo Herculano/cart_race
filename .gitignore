@@ -25,3 +25,5 @@ cart_race-*.tar
 # Ignore .elixir_ls
 /.elixir_ls/
 
+/public/race_output.csv
+

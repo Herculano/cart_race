@@ -53,7 +53,3 @@ defmodule CartTime do
 
   end
 end
-
-# t = Time.from_iso8601!("00:01:39.987")
-# duration = CartTime.to_microseconds(t)
-# CartTime.microseconds_to_time(duration)
