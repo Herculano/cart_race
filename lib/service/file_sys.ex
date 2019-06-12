@@ -1,4 +1,7 @@
 defmodule Service.FileSys do
+  @moduledoc """
+  Module that brings csv writers
+  """
 
   def make_csv(registers, header, key, prefix \\ nil, path \\ "public")
   def make_csv(registers, header, key, prefix, path) do

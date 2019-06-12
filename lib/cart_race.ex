@@ -56,9 +56,10 @@ defmodule CartRace do
     diff =
       case pilot.acc_lap == min_laps do
         true ->
-          Time.diff(pilot.time, w_time, :microsecond)
+          pilot.time
+          |> Time.diff(w_time, :microsecond)
           |> CartTime.microseconds_to_time()
-        _-> 0
+        _ -> 0
       end
     Map.put(pilot, :diff, diff)
   end
@@ -73,14 +74,12 @@ defmodule CartRace do
   end
 
   defp calculate(res, acc) do
-    {:cont,
+    result =
       case Enum.count(acc) do
         0 -> {res, ~T[00:00:00.000], res.velocity, 0, {res.lap, res.time}}
         _ ->
           velox = acc.velocity + res.velocity
-          avg_velox =
-            (velox / res.lap)
-            |> Float.round(3)
+          avg_velox = Float.round((velox / res.lap), 3)
 
           best_lap =
             if res.time < acc.best_lap_time,
@@ -89,8 +88,8 @@ defmodule CartRace do
 
           {res, acc.time, velox, avg_velox, best_lap}
       end
-      |> result_map()
-    }
+
+    {:cont, result_map(result)}
   end
 
   defp include_position({pilot, i}), do:

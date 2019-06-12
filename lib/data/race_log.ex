@@ -1,5 +1,8 @@
 defmodule Data do
-
+@moduledoc """
+Module to define all data
+that feeds tha application
+"""
   def parser do
     File.stream!("public/race_log.csv")
     |> CSV.decode!
@@ -7,13 +10,12 @@ defmodule Data do
   end
 
   defp transform_data(data) when not is_list(data) do
-    [_ | d] = data |> Enum.to_list
+    [_ | d] = Enum.to_list(data)
     transform_data(d)
   end
 
   defp transform_data(data) when is_list(data) do
-    data
-    |> Enum.map(fn [_c,id,name,velocity,time,lap] ->
+    Enum.map(data, fn [_c, id, name, velocity, time, lap] ->
       %{
         id: String.to_integer(id),
         name: name,
@@ -35,20 +37,10 @@ defmodule Data do
   end
 
   defp format_regs(reg) do
-    id_str = to_string(reg.id) |> String.pad_leading(2, "0")
+    id_str = String.pad_leading(to_string(reg.id), 2, "0")
     "#{reg.position},#{id_str} - #{reg.name},#{reg.time}, +#{reg.diff}, #{reg.acc_lap}, #{reg.avg_velocity}, #{reg.best_lap}, #{reg.best_lap_time}\n"
   end
 
-  @spec race_log_mocked :: [
-          %{
-            id: 1 | 2 | 3,
-            lap: 1 | 2 | 3 | 4,
-            name: <<_::48, _::_*32>>,
-            time: Time.t(),
-            velocity: float
-          },
-          ...
-        ]
   def race_log_mocked do
     [
       %{

@@ -22,7 +22,8 @@ defmodule CartRace.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:csv, "~> 2.3"}
+      {:csv, "~> 2.3"},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 end
