@@ -18,7 +18,7 @@ defmodule CartRace do
 
   def best_time_race(result) do
     result
-    |> Enum.sort(& CartTime.to_microseconds(&1.best_lap_time) < CartTime.to_microseconds(&2.best_lap_time))
+    |> Enum.sort(&is_it_slower?(&1.best_lap_time, &2.best_lap_time))
     |> Enum.at(0)
   end
 
@@ -80,7 +80,7 @@ defmodule CartRace do
           avg_velox = Float.round((velox / res.lap), 3)
 
           best_lap =
-            if is_lower_time?(res.time, acc.best_lap_time),
+            if is_it_slower?(res.time, acc.best_lap_time),
               do: {res.lap, res.time},
               else:  {acc.best_lap, acc.best_lap_time}
 
@@ -90,7 +90,7 @@ defmodule CartRace do
     {:cont, result_map(result)}
   end
 
-  defp is_lower_time?(t1, t2) do
+  defp is_it_slower?(t1, t2) do
     CartTime.to_microseconds(t1) < CartTime.to_microseconds(t2)
   end
 
