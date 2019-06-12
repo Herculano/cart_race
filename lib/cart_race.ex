@@ -80,7 +80,7 @@ defmodule CartRace do
           avg_velox = Float.round((velox / res.lap), 3)
 
           best_lap =
-            if CartTime.to_microseconds(res.time) < CartTime.to_microseconds(acc.best_lap_time),
+            if is_lower_time?(res.time, acc.best_lap_time),
               do: {res.lap, res.time},
               else:  {acc.best_lap, acc.best_lap_time}
 
@@ -88,6 +88,10 @@ defmodule CartRace do
       end
 
     {:cont, result_map(result)}
+  end
+
+  defp is_lower_time?(t1, t2) do
+    CartTime.to_microseconds(t1) < CartTime.to_microseconds(t2)
   end
 
   defp include_position({pilot, i}), do:
