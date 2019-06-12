@@ -1,4 +1,8 @@
 defmodule CartTime do
+  @moduledoc """
+  Should be all time functions to
+  deal with a cart race
+  """
 
   def add_time(timing, actual_time) do
     timing
@@ -33,10 +37,10 @@ defmodule CartTime do
 
   def microseconds_to_time(duration) do
 
-    microseconds = rem(duration, 1000000) / 1000
-    seconds = rem(Kernel.trunc(duration / 1000000), 60)
-    minutes = rem(Kernel.trunc(duration / (1000000 * 60)), 60)
-    hours = rem(Kernel.trunc(duration / (1000000 * 60 * 60)), 24)
+    microseconds = rem(duration, 1_000_000) / 1000
+    seconds = rem(Kernel.trunc(duration / 1_000_000), 60)
+    minutes = rem(Kernel.trunc(duration / (1_000_000 * 60)), 60)
+    hours = rem(Kernel.trunc(duration / (1_000_000 * 60 * 60)), 24)
 
     hours = if hours < 10, do:  "0" <> to_string(hours), else: to_string(hours)
     minutes = if minutes < 10, do: "0" <> to_string(minutes), else: to_string(minutes)
@@ -49,7 +53,7 @@ defmodule CartTime do
 
     {:ok, time} = Time.new(hours, minutes, seconds, microseconds)
 
-    time |> Time.truncate(:millisecond)
+    Time.truncate(time, :millisecond)
 
   end
 end
