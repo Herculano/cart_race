@@ -45,8 +45,7 @@ defmodule CartRace do
     [winner | squad] = grid
 
     [Map.put(winner, :diff, 0) |
-      squad
-      |> Enum.map(&analize_diff(&1, winner.time, min_laps))
+      Enum.map(squad, &analize_diff(&1, winner.time, min_laps))
     ]
   end
 
@@ -65,8 +64,7 @@ defmodule CartRace do
   end
 
   defp reducer({_id, pilots}, laps \\ 4) do
-    pilots
-    |> Enum.reduce_while(%{}, fn res, acc ->
+    Enum.reduce_while(pilots, %{}, fn res, acc ->
       if res.lap <= laps,
         do: calculate(res, acc),
         else: {:halt, acc}
