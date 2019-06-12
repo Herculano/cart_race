@@ -80,7 +80,7 @@ defmodule CartRace do
           avg_velox = Float.round((velox / res.lap), 3)
 
           best_lap =
-            if res.time < acc.best_lap_time,
+            if CartTime.to_microseconds(res.time) < CartTime.to_microseconds(acc.best_lap_time),
               do: {res.lap, res.time},
               else:  {acc.best_lap, acc.best_lap_time}
 
